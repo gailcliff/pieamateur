@@ -24,3 +24,6 @@ Push the repo to remote
 How to create a new file and add content to it simultaneously (Windows):
     echo "content here" > filename.extension
     echo . > filename.extension (adds a new line)
+
+How to change git url origin
+    git remote set-url origin https://access_token@github.com/username/repo_name.git
