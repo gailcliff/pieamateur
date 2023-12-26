@@ -1,0 +1,122 @@
+MODULES
+A module is basically a python (.py) file.
+When you import another python module, or anything in the module, within your script, the code in the imported module gets executed at all levels.
+    E.g:
+    fad
+        __init.py__
+        baz
+            __init__.py
+                 bar() # function in __init__.py
+            foo
+        chad
+
+    importing like so: from fad import baz
+    will execute the code in the __init__ file of fad and __init__ file of baz too
+
+So, any executable statements will be executed.
+Also, design your code in a good way such that you prevent such things happening when you didn't intend.
+
+To prevent this, any code that you don't intend to get executed when you import a module should be wrapped in the conditional "if __name__ == '__main__'"
+
+    if __name__ == '__main__':
+        # only execute this block of code if this
+        # is the file that i'm currently running (if it's the main file)
+        # if this file is imported in another file, the code in this block will not be executed
+
+
+IMPORT STATEMENT VARIANTS
+import module1
+import module1 as modulo  # custom name to use instead of defined name
+from module1 import function1
+from module1 import function1 as fn
+from module1 import function1, Class2 # import multiple items by separating by comma
+from module1 import *
+
+Printing help/info about an object: use help(obj) - will automatically print stuff about the obj
+
+dir(module_name) - return a list of the names (of variables, functions, classes etc) a module defines
+# module_name would be a module that you've imported, for example e.g dir(module1) above
+
+
+RESTRICTING WHAT IS IMPORTED FROM YOUR FILE
+Use __all__ inside your module to restrict what is imported when the wildcard '*' is used for importing everything.
+It is a list of strings of names of stuff you've defined.
+When importing using the wildcard '*', variable/class/function names starting with an underscore _ will not be imported (alternative to using __all__ array to restrict what gets exported)
+
+In the __init__ file, you can also write code that is general to the package but not specific to any of the submodules or
+subpackages and then just use the code as you please.
+Importing a package is basically like importing the __init__.py file of the package.
+E.g
+    fad
+        __init.py__
+        baz
+            __init__.py
+                 bar() # function in __init__.py
+            foo
+        chad
+
+    from fad import baz
+    baz.bar()
+
+__all__ = ['is_user_siged_up', 'signup_user', 'power']
+
+- It tells the readers of the source code — be it humans or automated tools — what’s the conventional public API exposed by the module.
+- It lists names to import when performing the so-called wild import: from module import *.
+
+
+PACKAGE IMPORTING
+A package must have the __init__.py file. In this file you can write initialization code for the package.
+Can also define what goes inside the __all__ list
+
+sound/ Top-level package
+    __init__.py Initialize the sound package
+    formats/ Subpackage for file format conversions
+        __init__.py
+        wavread.py
+        wavwrite.py
+        aiffread.py
+        aiffwrite.py
+        auread.py
+        auwrite.py
+        ...
+    effects/ Subpackage for sound effects
+        __init__.py
+        echo.py
+        surround.py
+        reverse.py
+        ...
+    filters/ Subpackage for filters
+        __init__.py
+        equalizer.py
+        vocoder.py
+        karaoke.py
+        ...
+
+Example import statements from above dir structure:
+- import sound.effects.echo - imports the echo module from effects
+    When using the above statement in your code you have to write it in full: sound.effects.echo.synthesize()
+- from sound.effects import echo
+    Alt to above: echo.synthesize()
+- from sound.effects.echo import echofilter - import a specific module/variable/class/function
+    echofilter(input, output, delay=0.7, atten=4)  # you can call this function standalone without having to precede it with its predecessor like pred.fn_call()
+-- Relative imports --
+In the surround module you can use these imports:
+    from . import echo
+    from .. import formats
+    from ..filters import equalizer
+    
+Note that relative imports are based on the name of the current module. Since the name of the main module is always "__main__", MODULES INTENDED
+FOR USE AS THE MAIN MODULE OF A PYTHON APPLICATION MUST ALWAYS USE ABSOLUTE IMPORTS.
+
+Note:
+When using 'from package import item', the item can be either a submodule (or subpackage) of the package, or some other name defined in the package
+(e.g in the __init__.py file), like a function, class or variable. The import statement first tests whether the item is defined in the package(__init__.py);
+if not, it assumes it is a module and attempts to load it. If it fails to find it, an ImportError exception is raised.
+
+Contrarily, when using syntax like import item.subitem.subsubitem, each item except for the last must be a package; the last item can be a module
+or a package but CAN'T BE a class or function or variable defined in the previous item.
+When using import a.b.c (i.e using dot notation all through)
+    a, b, and c must all be a package or a module.
+    a and b must be packages (all items except the last MUST be packages)
+    c can be a package or a module
+    neither a, b, nor c can be anything other than a package or a module (can't be a function, class, variable, etc)

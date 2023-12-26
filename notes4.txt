@@ -1,0 +1,130 @@
+FILES
+Use 'with' when working with files. It ensures that right after you're done with the file, it is closed and clean-up is done.
+Good for efficiency.
+
+with open('notes2.txt', 'r+') as file:  # arg0 is file name, arg1 is mode in which to open the file
+
+    print(file.read())  # read the whole file at once
+    print(file.readlines())  # read the file and pass each line into a list
+
+    for line in file:  # most efficient way of reading line by line.
+        print(line)
+
+    file.write("foobar") # write to file
+    file.writelines([str(i) for i in range(10)])  # pass in an iterable of strings to write
+    file.flush()  # flush contents. you don't have to close if you're using 'with'
+
+print(file.closed)  # check if file is closed
+
+FILE MODES
+w - write
+r - read
+a - append
+
+When working with binary files, e.g photos, videos etc, make sure to use the binary mode when opening the file: open("file_name", "b")
+This is because using 'w' or 'r' can corrupt the file
+
+JSON
+Functions:
+    - json.dumps - convert an object to a json string
+    - json.dump - convert an object to a json string and dump it to a file
+    - json.loads - convert a json string to a json object
+    - json.load - read a json string from a file and convert to a json object
+
+import json
+
+class Person:
+
+    def __init__(self, fname, lname, age, hobbies):
+        self.fname = fname
+        self.lname = lname
+        self.age = age
+        self.hobbies = hobbies
+
+
+json_file = open('dict.json', 'w')
+person = Person("cliff", "gail", 21, ['coding', 'music', 'karaoke'])
+json.dump(person.__dict__, json_file, indent=3) # dump object to a json string to a file. indent is the number of tab spaces to use to make the json string easily readable
+json_str = json.dumps(person.__dict__, indent=10) # convert an object to a json string
+
+print(json_str)
+
+json_from_str = json.loads(json_str) # create a json object from a json string
+print(json_from_str)
+
+json_dat = json.load(open("dict.json", 'r')) # create a json object from a json file
+print(type(json_dat['hobbies']))
+print(json_dat)]
+
+
+EXCEPTIONS
+class CustErr(Exception):
+
+    def __str__(self):
+        return "custom exception occurred at line 4"
+
+
+try:
+    raise CustErr  # similar to throw in Java
+
+except CustErr as e: # except (CustErr, AnotherError) as e: - use this to combine multiple exceptions in a single catch(except) statement
+    print(e)  # print string representation of exception
+    print(type(e))
+    print(e.args)
+
+    raise CustErr from e  # from keyword is used to indicate that this exception is a direct cause of e. will help when you read the stack trace
+
+
+except...else...finally
+def divide(x, y):
+    try:
+...     result = x / y
+... except ZeroDivisionError:  # executed when exception occurs
+...     print("division by zero!")
+... else:  # executed when code runs smoothly and the exception didn't occur (wasn't caught in above block)
+...     print("result is", result)
+... finally:  # executes regardless of exception occurring or not
+...     print("executing finally clause")
+
+
+Enriching exceptions with notes
+
+try:
+    raise TypeError('bad type')
+except Exception as e:
+    e.add_note('Add some information')
+    e.add_note('Add some more information')
+    raise
+
+
+GETTING CURRENT TIME IN MILLISECONDS SINCE EPOCH
+import time
+
+seconds = time.time()  # seconds since epoch
+millis = round(time.time() * 1000)  # milliseconds since epoch - multiply by 1000
+nanoseconds = time.time_ns()  # nanoseconds since epoch
+millis_from_nanos = nanoseconds / 1000000  # can convert from nanos to millis - divide by 1000000
+
+GETTING TODAY'S DATE
+from datetime import date
+
+today = date.today()
+
+GETTING CURRENT TIME
+from datetime import datetime
+
+curr_time = datetime.now()
+hour = curr_time.hour
+minute = curr_time.minute
+second = curr_time.second
+
+
+One typical workflow in creating Django apps is to create models and get the admin sites up and running as
+fast as possible, so your staff (or clients) can start populating data. Then, develop the way data is presented
+to the public.
+
+Note that you don’t have to use Django’s template system if you prefer another system. While Django’
+s template system is particularly well-integrated with Django’s model layer, nothing forces you to use it.
+For that matter, you don’t have to use Django’s database API, either. You can use another database
+abstraction layer, you can read XML files, you can read files off disk, or anything you want. Each piece of
+Django –models, views, templates –is decoupled from the next.

@@ -1,0 +1,100 @@
+FUNCTIONS
+1. Calling with optional params
+def greet(greeting, name='Doe'): # name has a default value and doesn't have to be passed in
+    print(greeting, name)
+
+greet("hello", 'Cliff')
+
+Positional param cannot come after keyword param.
+
+2. Variable number of arguments
+*args is placed in a tuple and **kwargs placed in a dictionary
+
+def foo(*args, **kwargs):
+    for arg in args: print(arg, end=' ')
+    print()
+    for kwarg in kwargs: print(f'{kwarg}: {kwargs[kwarg]}', end=', ')
+
+3. Restricting how params can be passed
+def greet(greeting, /, first_name, *, last_name='Doe'):
+    # greeting can only be passed positionally
+    # first_name can be passed by position or by keyword
+    # last_name can only be passed by keyword
+    print(greeting, first_name, last_name)
+
+5. Passing in params using a dictionary or sequence (tuple, list etc)
+Use *sequence_name for a sequence
+Use **dict_name for dictionary
+dictionary keywords must match parameter keywords
+
+def signup_user(fname, lname):
+    print("signing up user...")
+    print(f"signed up user with username {fname}_{lname}")
+
+def fetch_user_data():
+    return {
+        "fname": 'Gail',
+        "lname": 'Cliff'
+    }
+
+dat = fetch_user_data()
+signup_user(**dat) # dictionary
+
+names= ['gail', 'cliff']
+signup_user(*names) # sequence
+
+LAMBDA EXPRESSION FUNCTION
+Anonymous function without name.
+Lambda functions can be used wherever function objects are required. They are syntactically restricted to a single expression.
+Can pass lambda expression into a function that requires a function as a parameter
+
+def exponen(base):
+    # returns a function defined as a lambda expression
+    return lambda power: base ** power # power is the parameter/argument passed to the lambda function
+
+
+power_up = exponen(2)
+print(power_up(4))
+print(power_up(8))
+print(power_up(5))
+
+FUNCTION DOCSTRINGS
+def my_function():
+    """
+    Do nothing, but document it.
+
+    No, really, it doesn't do anything.
+    """
+    pass
+
+ANNOTATIONS (like type specifiers, but in Python they really have no effect. Code will still execute even if you pass wrong data type)
+def is_user_signed_up(username: str, pin: int) -> bool: # accepts string and int and returns bool
+    return False
+
+
+----- DATA STRUCTURES -----
+LISTS
+list.append(a) - add new item a
+list.extend(iterable): add iterable to list. iterable can be list, tuple, range, etc
+list.pop() - remove last item, or pass in index to specify
+list.remove(x) - remove first item from the list that matches x. x is not an index, it is a value
+list.count(x) - count num times x appears in list
+list.insert(i, x) - insert item x at position i in list. the item will be at position i after insertion
+list.index(x, start, end) - search for x and return the first index where it's found
+list.reverse() - reverse list order in place. Used reversed() to get a copy instead
+list.sort() - sort list in place. Use sorted() to get a copy instead
+
+List comprehensions: See viper5.py
+
+TUPLES
+Tuples are just like lists, but immutable.
+Used for item packing and packing.
+Tuples are more for heteregenous (different data types) items, lists are more for homogenous(same data type).
+
+
+SETS
+Unordered sequence of items with no duplicates.
+Example use case is to get a set of unique items in a sequence (e.g string or list) to eliminate duplicates
+
+a = set('abracadabra') - returns {'a', 'r', 'b', 'c', 'd'} - set of unique letters
+Sets also support math operations such as union, intersection, difference and symmetric difference.

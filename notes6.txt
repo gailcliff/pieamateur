@@ -1,0 +1,21 @@
+VIRTUAL ENVIRONMENT (venv)
+
+virtualenv is used to manage Python packages for different projects. Using virtualenv allows you to avoid installing Python packages globally
+which could break system tools or other projects. You can install virtualenv using pip.
+
+venv (for Python 3) and virtualenv (for Python 2) allow you to manage separate package installations for different projects. They essentially allow you
+to create a “virtual” isolated Python installation and install packages into that virtual installation. When you switch projects, you can simply create a new
+virtual environment and not have to worry about breaking the packages installed in the other environments.
+
+IT IS ALWAYS RECOMMENDED TO USE A VIRTUAL ENVIRONMENT WHILE DEVELOPING PYTHON APPLICATIONS.
+
+This way, installations e.g through pip, like Django, that you do in one project will not affect other projects.
+Each project can have it's own isolated versions of installations.
+
+It’s all too easy to thoughtlessly globally install dozens of packages and in time end up with a Python environment fraught with conflicts between older and newer
+versions of tools, making work harder than it needs to be.
+
+Python comes with an automated system for keeping a package set local to a given Python project. Virtual environments—courtesy of the virtualenv tool in Python 2
+and venv in Python 3—can be used to create a separate, isolated instance of the Python runtime for a project, with its own complement of packages.
+
+DON'T SHARE VIRTUAL ENVIRONMENTS BETWEEN PROJECTS.

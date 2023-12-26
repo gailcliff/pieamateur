@@ -1,0 +1,301 @@
+-- CLASSES ---
+
+CLASS AND INSTANCE VARIABLES
+Instance variables are for data unique to each instance and class variables are for attributes and methods SHARED BY ALL INSTANCES of the class.
+Class variables appear at the global scope of the class and instance variables are declared within the class functions (e.g __init__)
+
+class Dog:
+    kind = 'canine' # set class variable that will be shared by all instances
+
+def __init__(self, name):
+    self.name = name # instance variable unique to each instance (each object instantiated from this class)
+
+OPTIONS FOR CALLING A CLASS
+1. Just apply parentheses directly
+E.g
+    dog = Dog('symba')
+2. Use the __call__ method from 'type' which classes inherit from. Use 'ClassName.__call()'. Notice parentheses are only applied at the end of the statement
+E.g
+    dog = Dog.__call__('symba')
+
+VARIABLES DECLARED AT THE GLOBAL SCOPE FOR THE CLASS ARE SHARED BY AND CAN BE ACCESSED BY ALL INSTANCES OF THE CLASS.
+TO MAKE VARIABLES INSTANCE-SPECIFIC, YOU MUST DECLARE THEM AT THE CLASS FUNCTION LEVEL, PREFERABLY INSIDE __init__. DECLARE THEM INSIDE __init__ AND THEN ACCESS
+THEM FROM ANYWHERE INSIDE THE CLASS.
+
+Example of unintended outcome:
+class Person:
+
+    hobbies = []  # this will be shared by all instances
+    age: int
+
+    def __init__(self, name):
+        self.name = name
+
+
+person = Person("john doe")
+person.hobbies.append("skiing")
+person.hobbies.append("travel")
+
+person1 = Person("janet jane")
+person1.hobbies.append("swimming")
+person1.hobbies.append("archery")
+
+print(person.hobbies)  # ['skiing', 'travel', 'swimming', 'archery']
+print(person1.hobbies)  # ['skiing', 'travel', 'swimming', 'archery']
+
+Both of the print calls above return a list containing variables that were not defined by either Person objects. Fix: move the declaration of 'hobbies' to __init__
+
+
+INHERITANCE
+Use super() to access parent attributes from within the child class. Analogous to 'super' in Java. Difference with Python is that you need to include the parentheses: super()
+
+
+class Animal:
+
+    name: str
+    species: str
+
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+
+    def eat(self):
+        print(self.name, " eating")
+
+    def move(self):
+        print(self.name, " moving")
+
+    def __str__(self):
+        return f"{self.name} of the species {self.species}"
+
+
+class Dog(Animal):
+
+    def __init__(self, name):
+        super().__init__(name, "Dog")
+
+    def eat(self):
+        super().eat()
+        print("Munch munch\n")
+
+    def move(self):
+        super().move()
+        print("Sprint sprint\n")
+
+
+animal = Animal("Whale", "Animalia")
+animal.eat()
+animal.move()
+print(animal)
+
+dog: Animal = Dog("Simba")
+dog.eat()
+dog.move()
+print(dog)
+
+
+Use isinstance() to check an instance’s type: isinstance(obj, int) will be True only if obj.__class__ is int or some class derived from int.
+    first argument is object, second argument is the class
+Use issubclass() to check class inheritance: issubclass(bool, int) is True since bool is a subclass of int. However, issubclass(float, int) is False since float is not a subclass of int
+    both arguments (arg0 and arg1) are classes. you're checking if arg0 is a subclass of arg1
+
+
+    print(isinstance(dog, Animal)) # True
+    print(isinstance(animal, Dog)) # False
+    print(issubclass(Dog, Animal)) # True
+    print(issubclass(Animal, Dog)) # False
+
+Private class variables: prefix your variable name with an underscore '_'. One underscore is fine.
+For name-mangling, prefix your variable name with two underscores '__'. This will automatically change the name of the variable to a class specific-name
+In the background. This is used to prevent naming conflicts/accidents, e.g in a class inheritance situation where you could possibly have such scenario.
+
+
+DATA CLASS
+A class that just holds some data and does nothing else.
+Use the @dataclass annotation
+This will also add things like a __string__() method etc.
+You just declare the variable names and it handles the rest, including instantiation.
+
+from dataclasses import dataclass
+@dataclass
+class Employee:
+    name: str
+    dept: str
+    salary: int q
+
+>>> john = Employee('john', 'computer lab', 1000)
+>>> john.dept
+'computer lab'
+>>> john.salary
+1000
+
+
+CLASS METHODS
+Class methods don't belong to any specific instance but to the class itself. Think of it like static methods in languages like Java,
+but they're not static, they're...class methods.
+Static methods usually can't modify or access any class-level attributes, but class methods can. You just invoke them not from
+any specific instance, but through the class itself.
+
+E.g:
+class CustomModel(BaseModel):
+    id: Optional[int] = None
+    __schema_cls__: Type[db_models.DbModel] # use type hint to get editor support. this class variable's value will actually
+                                            # be provided by the child classes
+
+    @classmethod
+    def fetch_all(cls): # cls is what self is for instance methods
+        return list(cls.__schema_cls__.objects.all().values()) # you use it to access class variables
+
+
+class User(CustomModel):
+    user_name: str
+    phone: str
+    email: EmailStr
+    __schema_cls__ = db_models.User # defining a member variable's value like this and not through 'self.variable_name'
+                                    # makes this a class variable and thus all class instances will share it. this becomes
+                                    # move evident if it's something like a list, and modifying the list makes all instances
+                                    # of the same class have the same list elements (this may be unexpected if you didn't think it through).
+                                    # if you actually do want a variable to be a class variable, you can access it through class methods
+                                    # annotated with @classmethod
+
+
+ITERATORS AND GENERATORS
+Generators are a simple and powerful tool for CREATING ITERATORS. They are written like regular functions but use the yield statement whenever
+they want to return data. Each time next() is called on it, the generator resumes where it left off (it remembers all the data values and which statement
+was last executed). An example shows that generators can be trivially easy to create:
+
+    def get_names(self):  # this is creating a generator. just use the 'yield' keyword instead of return
+        for person_name in self.names:
+            yield person_name
+
+    # utilizing a generator
+    for name in get_names(): # calling get_names() returns a generator
+        print("nayme: ", name)
+
+        OR
+    Use the next() built-in method to access items sequentially in the iterator
+
+    gen = get_names()
+    next(gen) # get next item. the error StopIteration will be raised when the end of the iterator is reached.
+
+
+Generator Expressions (used to create a generator (which is essentially a tool for creating iterators) using list-comprehension-like expressions)
+
+#  generator expression. prefer generator expressions to list comprehensions because they're more memory efficient.
+name_list = (name.upper() for name in person.names) # here's the generator expression. uses parentheses (), different from [] used in list comprehension
+for name in name_list:
+    print(name)
+
+
+CREATING CUSTOM ITERATOR FROM YOUR CLASS
+
+class Person:
+
+    def __init__(self):
+        self.names = []
+        self.idx = 0
+
+    def add_name(self, name):
+        self.names.append(name)
+
+    def __len__(self): # the dunder function __len__ is a proxy for getting the length of items in ths class
+        return len(self.names) # we just return the length of the internal list
+        # we do this so that we can just call
+        #   person = Person()
+        #   num_people = len(person) - this will invoke the __len__ method
+        # for more concise and encapsulated code
+
+    def __iter__(self):  # to initialize the iterator, use __iter__ and just return the class itself
+        return self
+
+    def __next__(self):  # for __next__, return the next desired variable when the next item is requested e.g through a for loop or the next() method.
+                         # raise StopIteration exception to signify that iteration should stop maybe because items are exhausted
+        if self.idx == len(self.names):
+            self.idx = 0
+            raise StopIteration
+
+        self.idx += 1
+        return self.names[self.idx - 1]
+
+
+person = Person()
+person.add_name("vaught")
+person.add_name("liss")
+person.add_name("papiyier")
+person.add_name("denda")
+person.add_name("oliec")
+
+# can create a list out of the iterator in Person
+nm_list = list(person)
+print(nm_list)
+
+# utilizing the iterator
+Use the iter() method to get the iterator representation of your class and prepare for iterations.
+It is preferred to use the iter() method to get the iterator in this custom iterator situation, though you can just iterate through it
+without getting the iterator representation
+
+    itrtr = iter(person)
+    foo = next(itrtr)
+
+for name in iter(person):
+    print(name * 2)
+
+# can even use next() method with the custom iterator
+iteratr = iter(person)
+print("next:", next(iteratr))
+print("next:", next(iteratr))
+print("next:", next(iteratr))
+
+nm_list = list(iteratr)
+print(nm_list)
+
+Basically, any iterable can be converted to a list, including a generator.
+A generator remembers the index of the last item that was accessed. When you invoke a for loop, or convert the generator to a list, it will compile elements from where it left off.
+E.g:
+gen = (i**2 for i in range(1,10))
+geni = iter(gen)
+
+print(next(geni))
+print(next(geni))
+
+for j in geni:
+    print(j, end=' ')
+
+print()
+
+print(list(gen))
+
+Outputs:
+1
+4
+9 16 25 36 49 64 81
+[]
+
+
+ADDING ITEMS TO A PYTHON LIST WHILE SORTING IT AT THE SAME TIME
+Use the inbuilt bisect module
+
+import bisect
+
+persons: list[Person] = []
+
+def user_key(person: Person):
+    return person.age # this will sort it in ascending order
+                      # to sort in descending order, negate the value (return -person.age instead)
+                      # the key specifies which field you want to use for sorting. it is function that returns a value
+
+bisect.insort(persons, Person('foo', 'male', 45), key=user_key)
+bisect.insort(persons, Person('bar', 'female', 24), key=user_key)
+bisect.insort(persons, Person('baz', 'male', 39), key=user_key)
+bisect.insort(persons, Person('choo', 'male', 67), key=user_key)
+bisect.insort(persons, Person('zoo', 'female', 14), key=user_key)
+bisect.insort(persons, Person('loo', 'male', 21), key=user_key)
+bisect.insort(persons, Person('moo', 'female', 89), key=user_key)
+bisect.insort(persons, Person('var', 'male', 33), key=user_key)
+bisect.insort(persons, Person('char', 'male', 31), key=user_key)
+bisect.insort(persons, Person('lar', 'male', 6), key=user_key)
+
+You can use the argument 'key' to specify the field in your class that will be used for sorting (that's if you're using
+classes. we wouldn't have to do this if we were just sorting plain numbers for example)
+
+Calling bisect.insort will add the item to the list while sorting it at the same time.

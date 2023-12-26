@@ -1,0 +1,413 @@
+print(obj)
+print(obj, end=" ") # the default end of the printed string is a newline. specify a different end using the 'end' param
+
+
+GETTING COMMAND-LINE VARIABLES
+
+import sys
+for arg in sys.argv:
+    # the first string in the array is the name of the module, e.g 'main.py'
+    # the rest of the strings are the variables passed in delimited by space
+    print("argument: " + arg)
+
+GETTING INPUT FROM USER
+var = input("Enter var: ")
+then you can cast to the data type you want e.g int, bool
+
+GETTING OS ENVIRONMENT VARIABLE
+import os
+print(os.environ.get("variable-name")) # variable name e.g PATH
+
+DIVISION ALWAYS RETURNS FLOATING-POINT NUMBER
+8/5 = 1.6
+0.5 = 0.0
+
+DOING DIVISION BY TRUNCATING FRACTIONAL PART
+8//5 = 1 (not 1.6)
+8 % 5 to get remainder (3)
+
+POWERS (Use **)
+3 ** 2 = 9 (3 power 2)
+
+ASSIGNING MULTIPLE ITEMS AT ONCE
+Number of items at left side of assignment must be equal to num items on the right
+i, j = 0, 1 (RHS is a tuple. It could be a list too if you want)
+
+Use the 'del' keyword to remove a variable or item/slice in a list from memory
+a = 10
+lst [1,2,3]
+del a
+del lst[1]
+
+You can chain conditional statements together
+E.g:
+a, b, c = [13, 23, 89]
+print(a < b < c)  # chain together. returns True if cumulative result is true
+
+RAW STRING
+stri = r'string_here'
+
+MULTI-LINE STRING
+Use triple single or double quotes
+''' string '''
+""" string """
+
+STRINGS
+ - Concatenating: str1 + str2
+ - Repeating: str1 * 3 (repeats str1 3 times)
+ - Getting char at index: Use subscript indexing like in arrays
+    e.g str1 = 'Python'
+        str1[2] # substitute for chatAt function in java - returns 't'
+    str1[-2] # o
+
+ - Substring
+    str1[1:4] # yth
+        Gets the substring from index 1(inclusive) to index 4(exclusive)
+        Length is upper bound(exclusive) minus min lower bound
+    str1[:3] # from start up to 3 (exclusive)
+    str1[2:] # from 2 onwards
+    str1[:] # copy of the whole string
+
+    For non-negative strings, the length of the substring is the difference of the indices used to split, e.g
+    length of str1[1:4] is 3
+
+ - String length: len(string)
+
+ - Embedding expressions in strings (Use f'str')
+    fname = "Cliff"
+    lname = "Gail"
+    age = 21
+    goal = "$billionaire in the next 5 years"
+
+    str2 = f"My name is {fname} {lname}. I am {age} years old. My goal is to become a {goal}"
+    print(str2)
+
+ - Getting string representation of something: str(obj)
+ - Raw string representation of object: repr(obj)
+ - Using str.format() - use this to replace placeholders using keyword parameters
+    str3 = "I am {age} years old. By my {future_age}{superlative} birthday, I will be a multi-billionaire ($ to be clear)."
+    print(str3.format(age=age, future_age=future_age, superlative='th'))
+ - Old string formatting (using % sign and tuples)
+    # i prefer this method tbh
+    str4 = "I am %d years old. By my %d%s birthday, I will be a multi-billionaire ($ to be clear) !!!" % (age, future_age, 'th')
+    print(str4)
+ - Use a string to concat others
+    names = "-".join(('cliff', 'gail', 'odhis'))
+    returns 'cliff-gail-odhis'
+
+
+LISTS
+nums = [4, 5543,9, 12, 91, 58]
+nums1 = [5,3,19]
+
+ - Slicing: same as slicing strings
+ - Concatenation: combines multiple lists using +
+    nums + nums1
+ - Adding item at end of list: use append() method
+    nums.append(100)
+ - Popping item:
+    pop item at end of list: nums.pop()
+    using index to pop any item: nums.pop(2)
+ - Assigning new list to a slice: the new assignment must be an iterable
+    nums[1:4] = [45,71,98] or [] or [8]
+ - Repeating list: nums * 3
+ - 'in' keyword: used to check whether a sequence (e.g list or tuple) has a certain value
+    9 in nums - returns True
+
+
+CONDITIONAL STATEMENTS
+if...elif...else
+
+--- LOOPS ---
+for loop - in python, does nothing other than iterate over items of any sequence/iterable (it is not like in Java/C where you specify start, increment and stop)
+nums =  [5,34,23,13]
+for num in nums:
+    print(num ** num)
+
+Iterate over a sequence of numbers:
+for i in range(10): iterate from 0 to 10 (exclusive)
+range(1, 20, 2): 1 is start, 20 is end(exclusive), 2 is the amount of each step, e.g this will increment by 2. 21 won't be included
+
+Convert range to list: list(range(10)) - will convert the iterable to list
+You can even sum an iterable, e.g sum(range(10))
+
+ELSE STATEMENT IN FOR LOOP
+An else statement in a for loop is executed when the loop iteration doesn't break, i.e there is a break directive but the condition caused the loop not to break
+E.g
+for i in range(2, 50):
+    for x in range(2, i):
+        # check if this number is divisible (division remainder is 0) by any number before it
+        # any number above it will not divide it anyway
+        if i % x == 0:
+            print("%d equals %d x %d" % (i, x, i//x))
+            break
+        # if no number divides it then it is a prime number and hence the else block will be executed
+        # else is executed when the loop doesn't break
+    else:
+        print(f"{i} is a prime number")
+
+MATCH-CASE (similar to switch-case in Java, but has no 'break' directive)
+Combine patterns using '|'
+
+d = int(input("Enter a number between 1 and 5"))
+
+match d:
+    case 1:
+        print("competitive")
+    case 2:
+        print("wimp")
+    case 3:
+        print("small-minded")
+    case 4:
+        print("scared")
+    case 5:
+        print("over thinker")
+    case 1000 | 1_000_000: # combining multiple patterns
+        print("on to something")
+    case _:
+        print("delusional")
+
+
+    UNPACKING WITH MATCH-CASE PATTERNS
+    Use a mix of constants and variables to match the patterns. When you use a variable, Python will populate that variable with the corresponding value
+    from the object you're matching it with. See below for a tuple and a class example.
+    When unpacking and you're matching a class, always pass in class constructor parameters using keywords inside your case block statements.
+       e.g don't do Coordinate(1,2) do Coordinate(x=1, y=2)
+
+    class Coordinate:
+        x: int
+        y: int
+
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+
+    i = int(input("Enter x co-ordinate:\t"))
+    j = int(input("Enter y co-ordinate:\t"))
+
+    coord = Coordinate(i, j)
+    coord_tuple = (i, j)
+
+    match coord_tuple:
+        case (0, 0):
+            print("origin")
+        case (0, y):
+            print(f'y={y}')
+        case (x, 0):
+            print(f"x={x}")
+        case (e, f):
+            print(f"at ({e}, {f})")
+        case _:
+            print("idk")
+
+
+    match coord:
+        case Coordinate(x=0, y=0):
+            print("coord is at origin")
+        case Coordinate(x=0, y=y):
+            print(f"coord is at the line y={y}")
+        case Coordinate(x=d, y=0):
+            print(f"coord is at the line x={d}")
+        case Coordinate(x=a, y=b):
+            print(f"coord is at ({a}, {b})")
+        case _:
+            print("delusional")
+
+
+    Use if-statement called a guard to match a case only if a certain condition is passed, e.g:
+        case Coordinate(x=a, y=b) if a == b:
+            print("x and y of coord are the same")
+
+    -- More Info --
+    • Like unpacking assignments, tuple and list patterns have exactly the same meaning and actually match arbitrary
+    sequences. An important exception is that they don’t match iterators or strings.
+    • Sequence patterns support extended unpacking: [x, y, *rest] and (x, y, *rest) work similar to unpacking assignments. The name after * may also be _,
+    so (x, y, *_) matches a sequence of at least two items without binding the remaining items.
+    • Mapping patterns: {"bandwidth": b, "latency": l} captures the "bandwidth" and "latency" values from a dictionary.
+    Unlike sequence patterns, extra keys are ignored. An unpacking like **rest is also supported. (But **_ would be redundant, so it is not allowed.)
+    • Subpatterns may be captured using the as keyword:
+        case (Point(x1, y1), Point(x2, y2) as p2): ...
+    will capture the second element of the input as p2 (as long as the input is a sequence of two points)
+    • Most literals are compared by equality, however the singletons True, False and None are compared by identity.
+
+
+ENUMS
+How to: create a class and inherit from the Enum class
+from enum import Enum
+
+class Color(Enum):
+    RED = 'r' # the label is the identifier. could be used to initialize it, e,g color = Color('r')
+    GREEN = 'g'
+    BLUE = 'b'
+
+    def __str__():
+        return self.value # return the value (r, g or b)
+
+c = Color.GREEN
+print(c.name) # returns GREEN
+
+# the labels (either r, g or b) are used to instantiate the enum object
+# a label not specified in the enum class will cause an error to be thrown
+# you can use a label of any data type, as far as i know
+color = Color(input("Enter your choice of 'red', 'blue' or 'green': "))
+match color:
+    case Color.RED:
+        print("I see red!")
+    case Color.GREEN:
+        print("Grass is green")
+    case Color.BLUE:
+        print("I'm feeling the blues :(")
+
+
+
+
+FUNCTIONS
+Functions in Python are first class citizens. This means that they support operations such as being passed as an argument, returned from a function,
+modified, and assigned to a variable.
+
+
+PASSING FUNCTIONS AS ARGUMENTS TO OTHER FUNCTIONS
+E.g, the signup_user function below takes in another function (on_signed_up) as an argument.
+To pass in function into another function as an argument, just remove the parentheses - ()
+
+def on_signed_up(user_id: int, username: str):
+    print(f"{username} was signed up with id {user_id}")
+
+def signup_user(fname, lname, on_signup):  # takes a function as argument
+    username = '_'.join((fname, lname))
+    on_signup(743, username)
+
+signup_user('gail', 'cliff', on_signed_up)  # remove parentheses to pass in as argument
+
+Another example with 'Callable' annotation. Import the Callable class from typing.py module
+from typing import Callable
+
+def a(x):
+    return "a(%s)" % (x,)
+
+def b(f: Callable, x): # it's just annotation it doesn't really affect any functionality
+    return f(x)
+
+print b(a,10)
+
+
+ASSIGNING FUNCTIONS TO VARIABLES
+def plus_one(number):
+    return number + 1
+
+add_one = plus_one
+add_one(5) # returns 6
+
+DEFINING FUNCTIONS INSIDE OTHER FUNCTIONS
+def plus_one(number):
+    def add_one(number):
+        return number + 1
+
+
+    result = add_one(number)
+    return result
+plus_one(4) # returns 5
+
+RETURNING FUNCTIONS FROM OTHER FUNCTIONS
+def hello_function():
+    def say_hi():
+        return "Hi"
+    return say_hi
+hello = hello_function()
+hello()  # returns 'Hi'
+
+NESTED FUNCTIONS HAVE ACCESS TO THE ENCLOSING FUNCTION'S SCOPE, AND VARIABLES IN THAT SCOPE
+def print_message(message):
+    "Enclosing Function"
+    def message_sender():
+        "Nested Function"
+        print(message) # this nested function can access the 'message' variable in the outer function
+
+    message_sender()
+
+print_message("Some random message")  # returns 'Some random message'
+
+
+DECORATORS
+def fn_to_upper_case(fn: Callable):
+    return lambda: fn().upper()
+
+
+def fn_split_string(fn: Callable):
+    return lambda: fn().split()  # split the string to a list
+
+
+@fn_split_string
+@fn_to_upper_case  # the decorators are executed from the bottom to up. the last decorator gets executed first.
+                   # in this case when you apply the decorators the other way round it won't work because lists don't have an upper() method
+def go_big():
+    return 'go big gail cliff'
+
+print(go_big())
+
+
+ANOTHER EXAMPLE
+
+def upperize(fn: Callable):  # the parameter is the original function, in this case, tokenize()
+    return lambda: fn().upper() # call the original function to get the string that the user input through standard input and then capitalize it
+                                # you're ALWAYS taking in a FUNCTION AS AN ARGUMENT and RETURNING A FUNCTION at the end of execution of the decorator function
+
+
+def split_str(fn: Callable):
+    return lambda: fn().split(" ")
+
+
+@split_str
+@upperize
+def tokenize():
+    token = input("Enter your token:\t")
+    return token
+
+
+tokenized = tokenize()
+print(tokenized)
+
+The function used for decorating is a function that returns a function, and it takes in a function as an argument
+
+
+DECORATORS WITH ARGUMENTS
+def upperize_with_arg(fn: Callable):
+    return lambda string: fn(string.upper())
+
+
+*** Alternative to above function ***
+def upperize_with_arg(fn: Callable):
+    def wrapper(string: str): # the inner wrapper function takes the same arguments as the original function where the decorator will be applied
+        return fn(string.upper()) # call the original function from the inner function, return the desired manipulated value in the inner function
+                                  # and then return that function
+
+    return wrapper # always return a function, and take in a function in the decorator function
+
+
+@upperize_with_arg
+def tokenize_with_arg(token: str):
+    return token
+
+
+to_tokenize = input("Enter string to tokenize:")
+tokenized_with_arg = tokenize_with_arg(to_tokenize)
+print(tokenized_with_arg)
+
+
+ANOTHER EXAMPLE:
+def capitalize_and_split(fn: Callable):
+    return lambda word: fn(word.upper().split(),) # same signature as function where decorator will be applied.
+                                                  # call the original function using the desired transformed values, even if they are not of the same data type
+                                                  # as defined in the function's signature. it will still work
+
+
+@capitalize_and_split
+def capt(word: str,):
+    return word
+
+
+bar = capt("gail cliff",) # returns ['GAIL', 'CLIFF']
+print(bar)
+
+# More info on decorators: https://www.datacamp.com/tutorial/decorators-python
