@@ -20,3 +20,7 @@ Set the branch
 
 Push the repo to remote
     git push -u origin main
+
+How to create a new file and add content to it simultaneously (Windows):
+    echo "content here" > filename.extension
+    echo . > filename.extension (adds a new line)
