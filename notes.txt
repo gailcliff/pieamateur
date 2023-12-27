@@ -171,7 +171,7 @@ match d:
     UNPACKING WITH MATCH-CASE PATTERNS
     Use a mix of constants and variables to match the patterns. When you use a variable, Python will populate that variable with the corresponding value
     from the object you're matching it with. See below for a tuple and a class example.
-    When unpacking and you're matching a class, always pass in class constructor parameters using keywords inside your case block statements.
+    When unpacking and you're matching a class, always pass in CLASS CONSTRUCTOR PARAMETERS      using keywords inside your case block statements.
        e.g don't do Coordinate(1,2) do Coordinate(x=1, y=2)
 
     class Coordinate:
