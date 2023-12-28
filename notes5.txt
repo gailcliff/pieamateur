@@ -107,14 +107,14 @@ Use issubclass() to check class inheritance: issubclass(bool, int) is True since
 
 Private class variables: prefix your variable name with an underscore '_'. One underscore is fine.
 For name-mangling, prefix your variable name with two underscores '__'. This will automatically change the name of the variable to a class specific-name
-In the background. This is used to prevent naming conflicts/accidents, e.g in a class inheritance situation where you could possibly have such scenario.
+in the background. This is used to prevent naming conflicts/accidents, e.g in a class inheritance situation where you could possibly have such scenario.
 
 
 DATA CLASS
 A class that just holds some data and does nothing else.
 Use the @dataclass annotation
-This will also add things like a __string__() method etc.
-You just declare the variable names and it handles the rest, including instantiation.
+This will also add things like a __str__() method etc.
+You just declare the variable names with types and it handles the rest, including instantiation.
 
 from dataclasses import dataclass
 @dataclass
@@ -146,6 +146,9 @@ class CustomModel(BaseModel):
     def fetch_all(cls): # cls is what self is for instance methods
         return list(cls.__schema_cls__.objects.all().values()) # you use it to access class variables
 
+    to call above method you do
+        CustomModel.fetch_all()
+
 
 class User(CustomModel):
     user_name: str
@@ -157,6 +160,7 @@ class User(CustomModel):
                                     # of the same class have the same list elements (this may be unexpected if you didn't think it through).
                                     # if you actually do want a variable to be a class variable, you can access it through class methods
                                     # annotated with @classmethod
+                                    # access will be like so: cls.class_var
 
 
 ITERATORS AND GENERATORS
