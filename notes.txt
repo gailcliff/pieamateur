@@ -238,7 +238,7 @@ from enum import Enum
 
 class Color(Enum):
     RED = 'r' # the label is the identifier. could be used to initialize it, e,g color = Color('r')
-    GREEN = 'g'
+    GREEN = 'g' # LHS is the 'name', RHS is the 'value'
     BLUE = 'b'
 
     def __str__():
@@ -339,8 +339,8 @@ def fn_split_string(fn: Callable):
 
 
 @fn_split_string
-@fn_to_upper_case  # the decorators are executed from the bottom to up. the last decorator gets executed first.
-                   # in this case when you apply the decorators the other way round it won't work because lists don't have an upper() method
+@fn_to_upper_case  # the decorators are executed from the bottom to up. the last decorator (bottom) gets executed first.
+                   # in this case when you apply the decorators the other way round it won't work because lists (returned from split) don't have an upper() method
 def go_big():
     return 'go big gail cliff'
 
@@ -368,7 +368,7 @@ def tokenize():
 tokenized = tokenize()
 print(tokenized)
 
-The function used for decorating is a function that returns a function, and it takes in a function as an argument
+The function used for decorating is a function THAT RETURNS A FUNCTION  , and it takes in a function as an argument
 
 
 DECORATORS WITH ARGUMENTS

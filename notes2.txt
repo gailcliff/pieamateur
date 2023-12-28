@@ -88,8 +88,8 @@ List comprehensions: See viper5.py
 
 TUPLES
 Tuples are just like lists, but immutable.
-Used for item packing and packing.
-Tuples are more for heteregenous (different data types) items, lists are more for homogenous(same data type).
+Used for item packing and unpacking.
+Tuples are more for heterogeneous (different data types) items, lists are more for homogenous(same data type).
 
 
 SETS
