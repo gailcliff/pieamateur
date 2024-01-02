@@ -1,0 +1,17 @@
+HOW TO ADD TO PATH IN TERMINAL
+
+    Run the following command:
+        open ~/.bashrc
+        OR open ~/.zshrc, depending on your terminal environment
+
+    Add the following command at the end of the file
+        export PATH="$PATH:<your path here>"
+
+        e.g
+        export PATH="$PATH:/Users/gailclifford/Applications/flutter/bin"
+        As you can notice, we're concatenating to the path by doing: $PATH adding a colon and then adding our path
+
+        export PATH="$PATH:$HOME/.docker/bin"
+        The above command takes the $HOME value which is a path itself, concatenates the location of docker and then
+        concatenates it to the $PATH
+        It would look like this: "$PATH:/Users/cliff/.docker/bin"
