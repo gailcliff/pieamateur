@@ -15,3 +15,25 @@ HOW TO ADD TO PATH IN TERMINAL
         The above command takes the $HOME value which is a path itself, concatenates the location of docker and then
         concatenates it to the $PATH
         It would look like this: "$PATH:/Users/cliff/.docker/bin"
+
+REFRESHING TERMINAL
+    Do source ~/.zshrc OR source ~/.bashrc so that it can refresh any settings that you changed outside, e.g
+    by editing zshrc or bashrc manually.
+
+
+HOW TO SSH INTO A REMOTE LINUX MACHINE (e.g an EC2 instance)
+cd into the directory containing the private key certificate
+Change the privileges of the certificate file to read only
+    chmod 400 certificate.cer
+
+ssh into the instance
+    ssh -i certificate.cer ubuntu@public_ip_address_here
+
+Now you're in. You can run commands remotely. To run a command as administrator (user "root"), use "sudo <command>".
+
+
+HOW TO EDIT A FILE IN TERMINAL
+    Run this command: vim file_name
+
+HOW TO RUN A BASH FILE
+    Run this command: bash script.sh
