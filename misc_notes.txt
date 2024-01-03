@@ -37,3 +37,10 @@ HOW TO EDIT A FILE IN TERMINAL
 
 HOW TO RUN A BASH FILE
     Run this command: bash script.sh
+
+HOW TO ELEVATE A USER TO ALLOW THEM TO ACCESS A GROUP (e.g when running terminal commands)
+    Scenario: the user ubuntu1 can't run any docker commands
+    Solution: add them to the docker group
+        sudo usermod -a -G docker <username>
+        e.g sudo usermod -a -G docker ubuntu1
+
