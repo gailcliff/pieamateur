@@ -27,3 +27,8 @@ How to create a new file and add content to it simultaneously (Windows):
 
 How to change git url origin
     git remote set-url origin https://access_token@github.com/username/repo_name.git
+
+After creating a virtual environment in vscode, you have to activate it so that you can access it in terminal (to stuff like pip install, otherwise pip install might occur in global python instead of local venv python)
+
+    How to activate:
+        Run this command: source .venv/bin/activate
